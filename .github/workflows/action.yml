@@ -50,8 +50,8 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.organization=abhijit
-            -Dsonar.projectKey=akannan1087_my-javawebapp-repo
+            -Dsonar.organization=abhijit390
+            -Dsonar.projectKey=abhijit390_java-maven-project
             -Dsonar.java.binaries=**/target/classes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
