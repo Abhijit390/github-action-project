@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout code
@@ -52,7 +52,7 @@ jobs:
           path: target/*.war
 
   deploy:
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     needs: build
     environment: production
 
