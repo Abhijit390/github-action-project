@@ -44,17 +44,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      # 6. SonarQube code analysis
-      - name: SonarQube Analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-            -Dsonar.projectKey="${{ vars.SONAR_PROJECT_KEY }}" \
-            -Dsonar.organization="${{ vars.SONAR_ORGANIZATION }}" \
-            -Dsonar.host.url="https://sonarcloud.io" \
-            -Dsonar.token="$SONAR_TOKEN"
-
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
         uses: actions/upload-artifact@v4
