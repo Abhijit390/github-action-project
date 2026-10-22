@@ -46,14 +46,16 @@ jobs:
         
       # 6. SonarQube Cloud analysis
       - name: SonarQube Cloud Analysis
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=abhijit
+            -Dsonar.projectKey=akannan1087_my-javawebapp-repo
+            -Dsonar.java.binaries=**/target/classes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-            -Dsonar.projectKey="${{ vars.SONAR_PROJECT_KEY }}" \
-            -Dsonar.organization="${{ vars.SONAR_ORGANIZATION }}" \
-            -Dsonar.host.url="https://sonarcloud.io" \
-            -Dsonar.token="$SONAR_TOKEN"
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
