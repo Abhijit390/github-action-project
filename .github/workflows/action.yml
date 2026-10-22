@@ -51,7 +51,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.organization=abhijit390
-            -Dsonar.projectKey=abhijit390_java-maven-project      
+            -Dsonar.projectKey=abhijit390_hotstar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
