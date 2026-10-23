@@ -49,9 +49,9 @@ jobs:
         run: |
             mvn clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=abhijit4cs \
-            -Dsonar.projectKey=abhijit4cs_myapp \
-            -Dsonar.java.binaries=**/target/classes
+            -Dsonar.projectKey=abhijit4cs_myapp
         env:           
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             
