@@ -11,10 +11,6 @@
      <maven.compiler.source>1.8</maven.compiler.source>
      <maven.compiler.target>1.8</maven.compiler.target>
 </properties>
-<properties>
-    <sonar.projectKey>abhijit390_in-reyaz-myapp</sonar.projectKey>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-</properties>
 	<dependencies>
 		<dependency>
 		    <groupId>com.oracle.bedrock</groupId>
