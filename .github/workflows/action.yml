@@ -1,36 +1,118 @@
-name: SonarQube
+
+name: Java CI/CD Pipeline to Tomcat
+
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      # 1. Checkout source code with full Git history
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 21
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+          fetch-depth: 0
+
+      # 2. Set up Java 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
         with:
-          java-version: 21
-          distribution: 'zulu' # Alternative distribution options are available.
-      - name: Cache SonarQube packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+          distribution: temurin
+          java-version: '17'
+
+      # 3. Verify Maven installation
+      - name: Check Maven
+        run: mvn -version
+
+      # 4. Cache SonarCloud packages
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          restore-keys: |
+            ${{ runner.os }}-sonar
+
+      # 5. Cache Maven dependencies
       - name: Cache Maven packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@v4
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 6. Build, test, package WAR and analyze with SonarCloud
+      - name: Build and analyze with SonarCloud
         env:
+          SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=abhijit390_hotstar
+        run: |
+          test -n "$SONAR_TOKEN" || {
+            echo "ERROR: SONAR_TOKEN is missing"
+            exit 1
+          }
+
+          mvn -B clean verify \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
+            -Dsonar.organization=abhijit390 \
+            -Dsonar.projectKey=abhijit390_hotstar \
+            -Dsonar.host.url="$SONAR_HOST_URL" \
+            -Dsonar.token="$SONAR_TOKEN"
+
+      # 7. Upload WAR artifact
+      - name: Upload WAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp
+          path: target/*.war
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to Tomcat
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      # 8. Download WAR artifact
+      - name: Download WAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myapp
+
+      # 9. Deploy WAR to Tomcat
+      - name: Deploy to Tomcat
+        env:
+          TOMCAT_USER: ${{ secrets.TOMCAT_USER }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
+          TOMCAT_HOST: ${{ secrets.TOMCAT_HOST }}
+        run: |
+          set -eu
+
+          WAR_FILE=$(find . -maxdepth 1 -name '*.war' -print -quit)
+          test -n "$WAR_FILE" || {
+            echo "ERROR: WAR file not found"
+            exit 1
+          }
+
+          curl --fail --show-error \
+            --user "$TOMCAT_USER:$TOMCAT_PASSWORD" \
+            --upload-file "$WAR_FILE" \
+            "http://${TOMCAT_HOST}/manager/text/deploy?path=/myapp&update=true"
+
+      # 10. Verify deployment
+      - name: Verify deployment
+        env:
+          TOMCAT_HOST: ${{ secrets.TOMCAT_HOST }}
+        run: |
+          curl --fail --show-error --head \
+            "http://${TOMCAT_HOST}/myapp"
