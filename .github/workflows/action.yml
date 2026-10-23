@@ -52,6 +52,7 @@ jobs:
         run: |
             mvn clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.organization=abhijit390 \
             -Dsonar.projectKey=abhijit390_myapp \
             -Dsonar.host.url="$SONAR_HOST_URL" \
             -Dsonar.token="$SONAR_TOKEN"
