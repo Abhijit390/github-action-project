@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SONAR_HOST_URL: https://sonarcloud.io/project/configuration/GitHubActions?id=abhijitcs_github-action-project
+      SONAR_HOST_URL: https://sonarcloud.io
       SONAR_ORGANIZATION: abhijitcs
       SONAR_PROJECT_KEY: abhijitcs_github-action-project
     steps:
@@ -62,7 +62,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           echo "Token length: ${#SONAR_TOKEN}"
-          for HOST in https://sonarcloud.io https://sonarqube.us; do
+          for HOST in https://sonarcloud.io ; do
             echo "== $HOST"
             curl -s -u "$SONAR_TOKEN:" "$HOST/api/authentication/validate"; echo
             curl -s -u "$SONAR_TOKEN:" "$HOST/api/organizations/search?member=true"; echo
