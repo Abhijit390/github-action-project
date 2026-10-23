@@ -7,7 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      SONAR_HOST_URL: https://sonarcloud.io
+      SONAR_ORGANIZATION: abhijit4cs
+      SONAR_PROJECT_KEY: abhijit390_github-action-project
     steps:
       # 1. Checkout code
       - name: Checkout code
@@ -57,10 +60,13 @@ jobs:
       - name: SonarQube Cloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |    
-            mvn verify sonar:sonar \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=abhijit4cs
+        run: |
+          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.host.url=${{ env.SONAR_HOST_URL }} \
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+            -Dsonar.java.binaries=target/classes \
+            -Dsonar.sources=.
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
