@@ -49,7 +49,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |    
-            mvn -B clean verify \
+            mvn -X clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
             
       # 7. Upload WAR as artifact (optional, for later jobs)
