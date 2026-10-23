@@ -48,7 +48,7 @@ jobs:
       - name: SonarQube Cloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -Dsonar.projectKey=abhijit390_in-reyaz-myapp
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=abhijit390_in-reyaz-myapp
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
