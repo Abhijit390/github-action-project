@@ -47,7 +47,7 @@ jobs:
       # 6. SonarQube Cloud analysis
       - name: SonarQube Cloud Analysis
         env:
-            SONAR_HOST_URL: https://sonarcloud.io
+            SONAR_HOST_URL: https://sonarcloud.io/
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
             mvn clean verify \
