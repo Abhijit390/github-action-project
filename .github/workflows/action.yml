@@ -89,3 +89,4 @@ jobs:
       - name: Verify deployment
         run: |
           curl -I http://${{ secrets.TOMCAT_HOST }}/myapp          
+
