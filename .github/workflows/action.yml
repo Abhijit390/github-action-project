@@ -46,14 +46,18 @@ jobs:
 
       # 6. SonarQube Cloud analysis
       - name: SonarQube Cloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          if [ -z "$SONAR_TOKEN" ]; then
+            echo "ERROR: SONAR_TOKEN is missing or empty."
+            exit 1
+          fi
             mvn -B -e clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=abhijit4cs \
             -Dsonar.projectKey=abhijit4cs_myapp
-        env:           
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
