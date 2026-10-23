@@ -57,6 +57,16 @@ jobs:
             ${{ runner.os }}-sonar
             
       # 6. SonarQube Cloud analysis
+      - name: Diagnose Sonar auth
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          echo "Token length: ${#SONAR_TOKEN}"
+          for HOST in https://sonarcloud.io https://sonarqube.us; do
+            echo "== $HOST"
+            curl -s -u "$SONAR_TOKEN:" "$HOST/api/authentication/validate"; echo
+            curl -s -u "$SONAR_TOKEN:" "$HOST/api/organizations/search?member=true"; echo
+          done
       - name: SonarQube Cloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
