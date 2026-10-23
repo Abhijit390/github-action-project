@@ -43,6 +43,17 @@ jobs:
       # 5. Build with Maven
       - name: Build with Maven
         run: mvn clean package -DskipTests
+
+      # 6. SonarQube Cloud analysis
+      - name: SonarQube Cloud Analysis
+        run: |
+            mvn clean verify \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.organization=abhijit4cs \
+            -Dsonar.projectKey=abhijit4cs_myapp \
+            -Dsonar.token="$SONAR_TOKEN"
+        env:           
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
