@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SONAR_HOST_URL: https://sonarcloud.io
+      SONAR_HOST_URL: https://sonarcloud.io/project/configuration/GitHubActions?id=abhijitcs_github-action-project
       SONAR_ORGANIZATION: abhijitcs
       SONAR_PROJECT_KEY: abhijitcs_github-action-project
     steps:
