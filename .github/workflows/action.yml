@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SONAR_HOST_URL: https://sonarcloud.io
-      SONAR_ORGANIZATION: abhijit4cs
-      SONAR_PROJECT_KEY: abhijit4cs_github-action-project
+      SONAR_ORGANIZATION: abhijitcs
+      SONAR_PROJECT_KEY: abhijitcs_github-action-project
     steps:
       # 1. Checkout code
       - name: Checkout code
