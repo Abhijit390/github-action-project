@@ -50,10 +50,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |    
             mvn -B clean verify \
-            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=abhijit4cs \
-            -Dsonar.projectKey=abhijit4cs_boom
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
