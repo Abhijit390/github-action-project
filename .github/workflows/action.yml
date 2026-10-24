@@ -55,15 +55,15 @@ jobs:
       # 6. SonarQube Cloud analysis
       - name: Diagnose Sonar auth  
         uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           projectBaseDir: .
           args: >
             -Dsonar.organization=abhijitcs
             -Dsonar.projectKey=abhijitcs_my
-            -Dsonar.java.binaries=**/target/classes
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.java.binaries=/target/classes      
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
