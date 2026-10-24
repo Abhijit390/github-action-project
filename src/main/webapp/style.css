@@ -71,8 +71,7 @@ form .form-control {
   border-radius: 4px;
   color: #fff;
   font-size: 1rem;
-  padding-top: 10px;
-  padding: 5px 20px;
+  padding: 10px 20px 5px;
 }
 
 .form-control input:is(:focus, :valid) {
