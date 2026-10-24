@@ -57,26 +57,17 @@ jobs:
             ${{ runner.os }}-sonar
             
       # 6. SonarQube Cloud analysis
-      - name: Diagnose Sonar auth
+      - name: Diagnose Sonar auth  
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=abhijitcs
+            -Dsonar.projectKey=abhijitcs_my
+            -Dsonar.java.binaries=**/target/classes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          echo "Token length: ${#SONAR_TOKEN}"
-          for HOST in https://sonarcloud.io ; do
-            echo "== $HOST"
-            curl -s -u "$SONAR_TOKEN:" "$HOST/api/authentication/validate"; echo
-            curl -s -u "$SONAR_TOKEN:" "$HOST/api/organizations/search?member=true"; echo
-          done
-      - name: SonarQube Cloud Analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.host.url=${{ env.SONAR_HOST_URL }} \
-            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
-            -Dsonar.java.binaries=target/classes \
-            -Dsonar.sources=.
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
