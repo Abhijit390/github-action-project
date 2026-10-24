@@ -59,7 +59,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-            mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            mvn clean verify sonar:sonar \
             -Dsonar.projectKey=abhijitcs_github-action-project \
              -Dsonar.host.url=$SONAR_HOST_URL \
             -Dsonar.token=$SONAR_TOKEN
