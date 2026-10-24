@@ -61,7 +61,7 @@ jobs:
             -Dsonar.organization=abhijitcs \
             -Dsonar.projectKey=abhijitcs_my \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.host.token=7d997f7b5fe994387c5543e2ac889c6475c4cf59
+            -Dsonar.token=7d997f7b5fe994387c5543e2ac889c6475c4cf59
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
