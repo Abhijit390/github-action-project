@@ -62,7 +62,6 @@ jobs:
             mvn sonar:sonar \
             -Dsonar.organization=abhijitcs \
             -Dsonar.projectKey=abhijitcs_github-action-project \
-            -Dsonar.host.url=$SONAR_HOST_URL \
             -Dsonar.token=$SONAR_TOKEN
             
       # 7. Upload WAR as artifact (optional, for later jobs)
