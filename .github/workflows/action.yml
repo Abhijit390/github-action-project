@@ -59,9 +59,9 @@ jobs:
         run: |
             mvn --batch-mode sonar:sonar \
             -Dsonar.organization=abhijitcs \
-            -Dsonar.projectKey=abhijitcs_my \
+            -Dsonar.projectKey=abhijitcs_github-action-project \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=7d997f7b5fe994387c5543e2ac889c6475c4cf59
+            -Dsonar.token=40ccd529ae389cd78eff749ce35e50b5b8c9f0e4
             
       # 7. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
